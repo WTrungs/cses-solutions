@@ -8,29 +8,20 @@ const int MDL = 1e9 + 7;
 
 int n, m;
 vector<int> adj[MAXN];
-bool visited[MAXN];
+vector<int> topo;
+int color[MAXN];
 int f[MAXN];
 
-void bfs(int u)
+void dfs(int u)
 {
-	queue<int> q;
-	q.push(u);
-	visited[u] = 1;
-	f[u] = 1;
-	while (q.size())
+	color[u] = 1;
+	for (auto v: adj[u])
 	{
-		u = q.front();
-		q.pop();
-		for (auto v: adj[u])
-		{
-			if (!visited[v])
-			{
-				visited[v] = 1;
-				f[v] = (f[v] + f[u]) % MDL;
-				q.push(v);
-			}
-		}
+		if (!color[v])
+			dfs(v);
 	}
+	color[u] = 2;
+	topo.push_back(u);
 }
 
 int main()
@@ -44,11 +35,11 @@ int main()
 		cin >> u >> v;
 		adj[u].push_back(v);
 	}
-	for (int i = 1; i < n; i++)
-	{
-		adj[i].push_back(i + 1);
-	}
-	bfs(1);
-	cout << f[n];
+	dfs(1);
+	f[n] = 1;
+	for (auto u: topo)
+		for (auto v: adj[u])
+			f[u] = (f[u] + f[v]) % MDL; 
+	cout << f[1];
 	return 0;
 }
