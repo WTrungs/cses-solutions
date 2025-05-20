@@ -60,8 +60,6 @@ int main()
 	for (int i = 1; i <= m; i++)
 		cin >> r[i];
 	Build(1, 1, n);
-	//tim thang trai nhat ma co h[i] >= r[j]
-	//cap nhat gia tri tai do (segment tree)
 	for (int i = 1; i <= m; i++)
 	{
 		int temp = Search(1, 1, n, r[i]);
